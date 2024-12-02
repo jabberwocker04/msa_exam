@@ -1,0 +1,5 @@
+server:
+  port: 19083
+
+message: "product-service local message update"
+#프로덕트 서비스에 제공될 yml 파일
