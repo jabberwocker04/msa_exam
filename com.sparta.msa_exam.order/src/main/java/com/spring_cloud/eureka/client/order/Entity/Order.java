@@ -1,5 +1,6 @@
 package com.spring_cloud.eureka.client.order.Entity;
 
+import com.spring_cloud.eureka.client.order.Dto.OrderDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,4 +20,9 @@ public class Order {
     @CollectionTable(name = "order_productIds", joinColumns = @JoinColumn(name = "order_id"))
     @Column(name = "product_id")
     private List<Long> productIds;
+
+    public void update(Long orderId, List<Long> productIds) {
+        this.orderId = orderId;
+        this.productIds = productIds;
+    }
 }

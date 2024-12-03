@@ -28,4 +28,22 @@ public class OrderService {
         return  orderRepository.save(order);
     }
 
+    public Order addOrder(Long orderId, List<Long> productIds) {
+
+        Order order = orderRepository.findById(orderId).get();
+        List<Long> existingProductIds = order.getProductIds();
+        existingProductIds.addAll(productIds);
+        order.setProductIds(existingProductIds);
+
+        return orderRepository.save(order);
+    }
+
+    public Order updateOrder(Long orderId, List<Long> productIds) {
+
+        Order order = orderRepository.findById(orderId).get();
+        order.update(orderId, productIds);
+        return orderRepository.save(order);
+
+    }
+
 }

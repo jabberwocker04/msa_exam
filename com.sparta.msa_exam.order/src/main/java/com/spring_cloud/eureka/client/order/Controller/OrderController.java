@@ -35,4 +35,24 @@ public class OrderController {
                 .body(orderService.createOrder(order));
     }
 
+    @PutMapping("/orders/{orderId}") // 주문 수정
+    public ResponseEntity<Order> addOrder(@PathVariable("orderId") Long orderId, @RequestBody List<Long> productIds) {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Server-Port", ServerPort);
+
+        return ResponseEntity.ok()
+                .headers(responseHeaders)
+                .body(orderService.addOrder(orderId, productIds));
+    }
+
+    @PutMapping("/orders/update/{orderId}") // 주문 상품 추가
+    public ResponseEntity<Order> updateOrder(@PathVariable("orderId") Long orderId, @RequestBody List<Long> productIds) {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Server-Port", ServerPort);
+
+        return ResponseEntity.ok()
+                .headers(responseHeaders)
+                .body(orderService.updateOrder(orderId, productIds));
+    }
+
 }

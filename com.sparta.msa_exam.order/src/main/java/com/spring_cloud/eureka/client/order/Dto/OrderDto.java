@@ -13,7 +13,7 @@ import java.util.List;
 public class OrderDto {
 
     private Long order_id;
-    private List<Long> product_ids;
+    private List<Long> productIds;
 
 //    public static OrderDto fromEntity(Order order){
 //        return OrderDto.builder()
