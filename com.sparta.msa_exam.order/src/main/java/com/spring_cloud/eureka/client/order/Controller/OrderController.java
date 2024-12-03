@@ -18,51 +18,58 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
-    private final ProductClient productClient;
+
     @Value("${server.port}") //
     String ServerPort;
 
     /*
-     * 주문 추가 API
+     * 주문 생성 API
      * */
     @PostMapping("/orders")
     public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("Server-Port", ServerPort);
 
         return ResponseEntity.ok()
-                .headers(responseHeaders)
+                .headers(DefaultHeaders())
                 .body(orderService.createOrder(order));
     }
 
+    /*
+    * 주문 추가 API
+    * */
     @PutMapping("/orders/{orderId}") // 주문 수정
     public ResponseEntity<Order> addOrder(@PathVariable("orderId") Long orderId, @RequestBody List<Long> productIds) {
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("Server-Port", ServerPort);
 
         return ResponseEntity.ok()
-                .headers(responseHeaders)
+                .headers(DefaultHeaders())
                 .body(orderService.addOrder(orderId, productIds));
     }
 
+    /*
+    * 주문 수정 API
+    * */
     @PutMapping("/orders/update/{orderId}") // 주문 상품 추가
     public ResponseEntity<Order> updateOrder(@PathVariable("orderId") Long orderId, @RequestBody List<Long> productIds) {
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("Server-Port", ServerPort);
 
         return ResponseEntity.ok()
-                .headers(responseHeaders)
+                .headers(DefaultHeaders())
                 .body(orderService.updateOrder(orderId, productIds));
     }
 
+    /*
+    * 주문 조회 API
+    * */
     @GetMapping("/orders/{orderId}")
     public ResponseEntity<Order> ReadOrder(@PathVariable("orderId") Long orderId) {
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("Server-Port", ServerPort);
 
         return ResponseEntity.ok()
-                .headers(responseHeaders)
+                .headers(DefaultHeaders())
                 .body(orderService.readOrder(orderId));
+    }
+
+    public HttpHeaders DefaultHeaders() {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Server-Port", ServerPort);
+        return responseHeaders;
     }
 
 }

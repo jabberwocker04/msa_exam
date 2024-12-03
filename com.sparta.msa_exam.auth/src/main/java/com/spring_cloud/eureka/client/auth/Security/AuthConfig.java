@@ -1,14 +1,14 @@
-package com.spring_cloud.eureka.client.auth;
+package com.spring_cloud.eureka.client.auth.Security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableWebSecurity
 public class AuthConfig {
 
     // SecurityFilterChain 빈을 정의합니다. 이 메서드는 Spring Security의 보안 필터 체인을 구성합니다.
@@ -18,9 +18,9 @@ public class AuthConfig {
                 // CSRF 보호를 비활성화합니다. CSRF 보호는 주로 브라우저 클라이언트를 대상으로 하는 공격을 방지하기 위해 사용됩니다.
                 .csrf(csrf -> csrf.disable())
                 // 요청에 대한 접근 권한을 설정합니다.
-                .authorizeRequests(authorize -> authorize
+                .authorizeHttpRequests(authorize -> authorize
                         // /auth/signIn 경로에 대한 접근을 허용합니다. 이 경로는 인증 없이 접근할 수 있습니다.
-                        .requestMatchers("/auth/signIn").permitAll()
+                        .requestMatchers("/auth/sign-in","auth/sign-up").permitAll()
                         // 그 외의 모든 요청은 인증이 필요합니다.
                         .anyRequest().authenticated()
                 )
@@ -32,4 +32,10 @@ public class AuthConfig {
         // 설정된 보안 필터 체인을 반환합니다.
         return http.build();
     }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 }

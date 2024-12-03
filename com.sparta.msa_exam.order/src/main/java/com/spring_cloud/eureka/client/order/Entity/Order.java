@@ -1,6 +1,5 @@
 package com.spring_cloud.eureka.client.order.Entity;
 
-import com.spring_cloud.eureka.client.order.Dto.OrderDto;
 import jakarta.persistence.*;
 import lombok.*;
 

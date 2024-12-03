@@ -1,31 +1,51 @@
 package com.spring_cloud.eureka.client.auth.Controller;
 
+import com.spring_cloud.eureka.client.auth.Dto.SignUpDto;
+import com.spring_cloud.eureka.client.auth.Entity.User;
+import com.spring_cloud.eureka.client.auth.Repository.UserRepository;
 import com.spring_cloud.eureka.client.auth.Service.AuthService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
-    /**
-     * 사용자 ID를 받아 JWT 액세스 토큰을 생성하여 응답합니다.
-     *
-     * @param user_id 사용자 ID
-     * @return JWT 액세스 토큰을 포함한 AuthResponse 객체를 반환합니다.
-     */
-    @GetMapping("/auth/signIn") //원래는 Post로 해야 하는데 예제기때문에 Get썻다.
-    public ResponseEntity<?> createAuthenticationToken(@RequestParam String user_id){
-        return ResponseEntity.ok(new AuthResponse(authService.createAccessToken(user_id)));
+    @Value("${server.port}") //
+    String ServerPort;
+
+    @PostMapping("/auth/sign-up")
+    public ResponseEntity<String> signup(@RequestBody SignUpDto signUpDto) {
+
+        String encodedPassword = passwordEncoder.encode(signUpDto.getPassword());
+        User user = new User(signUpDto.getUsername(), encodedPassword);
+        userRepository.save(user);
+
+        return ResponseEntity.ok()
+                .headers(DefaultHeaders()) // Server-Port 헤더 추가
+                .body("회원가입이 완료되었습니다.");
     }
+
+    @PostMapping("/auth/sign-in")
+    public ResponseEntity<?> createAuthenticationToken(@RequestParam String user_id){
+//        return ResponseEntity.ok(new AuthResponse(authService.createAccessToken(user_id)));
+    return ResponseEntity.ok()
+            .headers(DefaultHeaders())
+            .body("로그인 성공");
+    }
+
+
 
     /**
      * JWT 액세스 토큰을 포함하는 응답 객체입니다.
@@ -37,4 +57,11 @@ public class AuthController {
         private String access_token;
 
     }
+
+    public HttpHeaders DefaultHeaders() {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Server-Port", ServerPort);
+        return responseHeaders;
+    }
+
 }

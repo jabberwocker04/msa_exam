@@ -25,12 +25,10 @@ public class ProductController {
     * */
     @PostMapping("/products")
     public ResponseEntity<String> createProduct(@RequestBody ProductDto productRequestDto) {
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("Server-Port", ServerPort);
         productService.createProduct(productRequestDto);
 
         return ResponseEntity.ok()
-                .headers(responseHeaders)
+                .headers(DefaultHeaders())
                 .body("상품 추가 완료");
     }
 
@@ -40,11 +38,9 @@ public class ProductController {
     * */
     @GetMapping("/products")
     public ResponseEntity<List<ProductDto>> getProducts() {
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("Server-Port", ServerPort);
 
         return ResponseEntity.ok()
-                .headers(responseHeaders)
+                .headers(DefaultHeaders())
                 .body(productService.readAllProducts());
     }
 
@@ -54,7 +50,9 @@ public class ProductController {
     @PostMapping("/products/read")
     public ResponseEntity<List<ProductDto>> getProductsByIds(@RequestBody List<Long> productIds) {
         List<ProductDto> products = productService.findProductByIds(productIds);
-        return ResponseEntity.ok(products);
+        return ResponseEntity.ok()
+                .headers(DefaultHeaders())
+                .body(products);
     }
 
     // Order를 위한 상품 단 건 조회 2차
@@ -62,9 +60,17 @@ public class ProductController {
 //    @Cacheable(value = "products", key = "#productId") // 캐시
     public ResponseEntity<ProductDto> getProductById(@PathVariable Long productId, HttpServletRequest request) {
         ProductDto product = productService.getProductById(productId);
+
+
         return ResponseEntity.ok()
-                .header("Server-Port",String.valueOf(request.getLocalPort())) // 헤더에 Server-Port 추가
+                .headers(DefaultHeaders()) // 헤더에 Server-Port 추가
                 .body(product);
+    }
+
+    public HttpHeaders DefaultHeaders() {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Server-Port", ServerPort);
+        return responseHeaders;
     }
 
 }
