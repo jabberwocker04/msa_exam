@@ -1,5 +1,6 @@
-package com.spring_cloud.eureka.client.auth;
+package com.spring_cloud.eureka.client.auth.Controller;
 
+import com.spring_cloud.eureka.client.auth.Service.AuthService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

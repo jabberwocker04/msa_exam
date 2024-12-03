@@ -1,4 +1,4 @@
-package com.spring_cloud.eureka.client.auth;
+package com.spring_cloud.eureka.client.auth.Service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
