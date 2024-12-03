@@ -5,22 +5,23 @@ import lombok.*;
 import java.io.Serializable;
 import java.util.List;
 
+@Data
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class ProductDto implements Serializable {
 
     private Long product_id;
     private String name;
     private Integer supply_price;
 
-    public ProductDto(Product product){
-        this.product_id = product.getProduct_id();
-        this.name = product.getName();
-        this.supply_price = product.getSupply_price();
-    }
+//    public ProductDto(Product product){
+//        this.product_id = product.getProduct_id();
+//        this.name = product.getName();
+//        this.supply_price = product.getSupply_price();
+//    }
 
     public static ProductDto fromEntity(Product product){
         return ProductDto.builder()

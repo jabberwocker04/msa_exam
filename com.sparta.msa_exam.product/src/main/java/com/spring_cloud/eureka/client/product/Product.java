@@ -5,11 +5,12 @@ import lombok.*;
 
 @Entity
 @Getter
+@Table(name = "msa_product")
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-//@Table(name = "??_product");
+
 public class Product {
 
     @Id
@@ -18,12 +19,4 @@ public class Product {
     private String name;
     private Integer supply_price;
 
-
-
-//    public Product(ProductDto requestDto){
-//        this.product_id = requestDto.getProduct_id();
-//        this.name = requestDto.getName();
-//        this.supply_price = requestDto.getSupply_price();
-//
-//    }
 }
