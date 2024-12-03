@@ -1,8 +1,11 @@
 package com.spring_cloud.eureka.client.product;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +16,9 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+
+    @Value("${server.port}") // server.port값(19093)을 불러온다.
+    String ServerPort;
 
 //    @Value("${server.port}")
 //    private String serverPort;
@@ -28,22 +34,29 @@ public class ProductController {
     /*
     * 상품 추가 API
     * */
-    @PostMapping("/products")
-    public ProductDto products(@RequestBody ProductDto productRequestDto) {
-        return productService.createProduct(productRequestDto);
+    @PostMapping("products")
+    public ResponseEntity<String> productsTest(@RequestBody ProductDto productRequestDto) {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Server-Port", ServerPort);
+        productService.createProduct(productRequestDto);
+
+        return ResponseEntity.ok()
+                .headers(responseHeaders)
+                .body("상품 추가 완료");
     }
 
 
     /*
     * 상품 목록 조회 API
     * */
-
     @GetMapping("/products")
-    public List<ProductDto> getProducts(){
-        return productService.readAllProducts();
-    }
+    public ResponseEntity<List<ProductDto>> getProducts() {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Server-Port", ServerPort);
 
-    @Value("server.port") // server.port값(19093)을 불러온다.
-    String a;
+        return ResponseEntity.ok()
+                .headers(responseHeaders)
+                .body(productService.readAllProducts());
+    }
 
 }
