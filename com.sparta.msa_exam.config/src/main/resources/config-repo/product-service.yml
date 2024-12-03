@@ -1,5 +1,0 @@
-server:
-  port: 19093
-
-message: "product-service message"
-#프로덕트 서비스에 제공될 yml 파일
