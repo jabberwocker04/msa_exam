@@ -38,9 +38,12 @@ public class AuthController {
     }
 
     @PostMapping("/auth/sign-in")
-    public ResponseEntity<?> createAuthenticationToken(@RequestParam String user_id){
-//        return ResponseEntity.ok(new AuthResponse(authService.createAccessToken(user_id)));
-    return ResponseEntity.ok()
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody SignUpDto loginDto){
+    String token = authService.login(loginDto.getUsername(), loginDto.getPassword());
+        if (token.equals("Invalid username or password.")) {
+            return ResponseEntity.badRequest().body(token);
+        }
+        return ResponseEntity.ok()
             .headers(DefaultHeaders())
             .body("로그인 성공");
     }
