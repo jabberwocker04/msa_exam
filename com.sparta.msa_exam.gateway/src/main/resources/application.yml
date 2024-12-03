@@ -45,6 +45,14 @@ spring:
           uri: lb://product-service  # 'product-service'라는 이름으로 로드 밸런싱된 서비스로 라우팅
           predicates:
             - Path=/product/**  # /product/** 경로로 들어오는 요청을 이 라우트로 처리
+          filters:
+              - weight=service-19093,70
+        - id: product-service  # 라우트 식별자
+          uri: lb://product-service  # 'product-service'라는 이름으로 로드 밸런싱된 서비스로 라우팅
+          predicates:
+            - Path=/product/**  # /product/** 경로로 들어오는 요청을 이 라우트로 처리
+          filters:
+            - weight=service-19094,30
         - id: auth-service  # 라우트 식별자
           uri: lb://auth-service  # 'auth-service'라는 이름으로 로드 밸런싱된 서비스로 라우팅
           predicates:
