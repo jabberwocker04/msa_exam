@@ -46,4 +46,7 @@ public class OrderService {
 
     }
 
+    public Order readOrder(Long orderId) {
+        return orderRepository.findById(orderId).get();
+    }
 }

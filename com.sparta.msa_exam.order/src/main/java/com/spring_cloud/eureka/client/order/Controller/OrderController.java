@@ -55,4 +55,14 @@ public class OrderController {
                 .body(orderService.updateOrder(orderId, productIds));
     }
 
+    @GetMapping("/orders/{orderId}")
+    public ResponseEntity<Order> ReadOrder(@PathVariable("orderId") Long orderId) {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("Server-Port", ServerPort);
+
+        return ResponseEntity.ok()
+                .headers(responseHeaders)
+                .body(orderService.readOrder(orderId));
+    }
+
 }
